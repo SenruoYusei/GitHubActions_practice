@@ -1,2 +1,5 @@
 # Ignore build directory
 docs/build/
+
+# Ignore virtual environment directory
+venv/
