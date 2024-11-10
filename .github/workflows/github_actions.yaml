@@ -1,6 +1,12 @@
 name: Run pytest
 on: [push, pull_request_review]
 
+permissions:
+  contents: write
+  checks: write
+  actions: write
+  artifacts: write
+
 jobs:
   pytest:
     runs-on: ubuntu-latest
