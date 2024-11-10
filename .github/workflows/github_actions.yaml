@@ -5,7 +5,7 @@ on:
 permissions:
   contents: write
   checks: write
-  comments: write
+  issue: write
 
 jobs:
   pytest:
