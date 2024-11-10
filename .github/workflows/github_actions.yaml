@@ -1,5 +1,5 @@
 name: Run pytest
-on: [push, pull_request_review]
+on: [pull_request]
 
 permissions:
   contents: write
