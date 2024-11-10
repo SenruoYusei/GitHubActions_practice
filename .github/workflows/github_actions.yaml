@@ -6,6 +6,7 @@ permissions:
   contents: write
   checks: write
   actions: write
+  issues: write
 
 jobs:
   pytest:
