@@ -13,6 +13,8 @@ def get_todos():
 @app.route('/todos', methods=['POST'])
 def create_todo():
     data = request.get_json()
+    if 'title' not in data:
+        return jsonify({'error': 'Title is required'}), 400
     todo = {
         'id': len(todos) + 1,
         'title': data['title'],
