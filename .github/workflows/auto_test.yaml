@@ -20,10 +20,10 @@ jobs:
       - name: Load environment variables
         run: |
           pwd
-          ls -l
+          ls -Al
           cd ../
           pwd
-          ls -l
+          ls -Al
           python -c "import yaml; env = yaml.safe_load(open('.github/workflows/env.yaml')); [print(f'{key}={value}') for key, value in env['env'].items()]" >> $GITHUB_ENV
           echo ${{ env.PYTHON_VERSION }}
       # Pythonの環境をセットアップ
