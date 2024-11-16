@@ -20,9 +20,9 @@ jobs:
       - name: Load environment variables
         run: |
           for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
-            echo $s
             echo $s >> $GITHUB_ENV
           done
+          printenv
           echo "Python version = ${{ env.PYTHON_VERSION }}"
       # Pythonの環境をセットアップ
       - name: Set up Python 3.7
