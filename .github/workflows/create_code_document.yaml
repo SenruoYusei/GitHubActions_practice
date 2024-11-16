@@ -8,13 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          cat .github/workflows/env_vars >> $GITHUB_ENV
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
+          for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+            echo $s >> $GITHUB_ENV
+          done
+      # env.XXX can be used in the following steps
 
       - name: Set up Python
         uses: actions/setup-python@v4
