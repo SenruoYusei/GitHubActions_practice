@@ -19,11 +19,9 @@ jobs:
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          pwd
-          ls -Al
-          ls -Al .github
-          ls -Al .github/workflows
-          python -c "import yaml; env = yaml.safe_load(open('.github/workflows/env.yaml')); [print(f'{key}={value}') for key, value in env['env'].items()]" >> $GITHUB_ENV
+          for s in $(yq e ".${{ env.TARGET_BRANCH_NAME }}" -o=j environments.yml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+            echo $s >> $GITHUB_ENV
+          done
           echo "Python version = ${{ env.PYTHON_VERSION }}"
       # Pythonの環境をセットアップ
       - name: Set up Python 3.7
