@@ -16,7 +16,7 @@ jobs:
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          cat .github/workflows/env_vars >> $GITHUB_ENV
+          cat env_vars >> $GITHUB_ENV
 
       # リポジトリをチェックアウト
       - name: Checkout
