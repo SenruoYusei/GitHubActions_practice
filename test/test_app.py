@@ -1,6 +1,8 @@
 # test_app.py
 import pytest
+
 from src.app import app
+
 
 @pytest.fixture
 def client():
@@ -8,10 +10,12 @@ def client():
     with app.test_client() as client:
         yield client
 
+
 def test_get_todos(client):
     response = client.get('/todos')
     assert response.status_code == 200
     assert response.json == []
+
 
 def test_create_todo(client):
     response = client.post(
@@ -26,6 +30,7 @@ def test_create_todo(client):
     assert response.json['description'] == 'This is a test todo'
     assert response.json['done'] == False
 
+
 def test_get_todo(client):
     client.post(
         '/todos',
@@ -39,6 +44,7 @@ def test_get_todo(client):
     assert response.json['title'] == 'Test Todo'
     assert response.json['description'] == 'This is a test todo'
     assert response.json['done'] == False
+
 
 def test_update_todo(client):
     client.post(
@@ -61,6 +67,7 @@ def test_update_todo(client):
     assert response.json['description'] == 'This is an updated test todo'
     assert response.json['done'] == True
 
+
 def test_delete_todo(client):
     client.post(
         '/todos',
@@ -74,10 +81,12 @@ def test_delete_todo(client):
     response = client.get('/todos/1')
     assert response.status_code == 404
 
+
 def test_get_nonexistent_todo(client):
     response = client.get('/todos/999')
     assert response.status_code == 404
     assert response.json == {'error': 'Todo not found'}
+
 
 def test_update_nonexistent_todo(client):
     response = client.put(
@@ -91,9 +100,11 @@ def test_update_nonexistent_todo(client):
     assert response.status_code == 404
     assert response.json == {'error': 'Todo not found'}
 
+
 def test_delete_nonexistent_todo(client):
     response = client.delete('/todos/999')
     assert response.status_code == 204
+
 
 def test_create_todo_without_description(client):
     response = client.post(
@@ -106,6 +117,7 @@ def test_create_todo_without_description(client):
     assert response.json['title'] == 'Test Todo'
     assert response.json['description'] == ''
     assert response.json['done'] == False
+
 
 def test_create_todo_without_title(client):
     response = client.post(
