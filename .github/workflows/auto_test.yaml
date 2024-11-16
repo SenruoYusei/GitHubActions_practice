@@ -24,7 +24,7 @@ jobs:
           ls -Al .github
           ls -Al .github/workflows
           python -c "import yaml; env = yaml.safe_load(open('.github/workflows/env.yaml')); [print(f'{key}={value}') for key, value in env['env'].items()]" >> $GITHUB_ENV
-          echo ${{ env.PYTHON_VERSION }}
+          echo "Python version = ${{ env.PYTHON_VERSION }}""
       # Pythonの環境をセットアップ
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
