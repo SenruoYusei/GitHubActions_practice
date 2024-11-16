@@ -16,6 +16,11 @@ jobs:
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
+          python -c "import yaml; env = yaml.safe_load(open('.github/workflows/env.yaml')); [print(f'{key}={value}') for key, value in env['env'].items()]" >> $GITHUB_ENV
+
+      # 環境変数を読み込む
+      - name: Load environment variables
+        run: |
           cat .github/workflows/env_vars >> $GITHUB_ENV
 
       # リポジトリをチェックアウト
