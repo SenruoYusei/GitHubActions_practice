@@ -23,7 +23,7 @@ jobs:
           ls -Al
           ls -Al .github
           ls -Al .github/workflows
-          cat .github/workflows/env_vars >> $GITHUB_ENV
+          cat .github/workflows/env.yaml >> $GITHUB_ENV
           echo ${{ env.PYTHON_VERSION }}
       # Pythonの環境をセットアップ
       - name: Set up Python 3.7
