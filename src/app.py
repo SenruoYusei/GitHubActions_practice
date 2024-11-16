@@ -8,7 +8,9 @@ todos = []
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
+
     return jsonify(todos)
+
 
 @app.route('/todos', methods=['POST'])
 def create_todo():
@@ -27,6 +29,7 @@ def create_todo():
 @app.route('/todos/<int:todo_id>', methods=['GET'])
 def get_todo(todo_id):
     todo = next((todo for todo in todos if todo['id'] == todo_id), None)
+
     if todo is None:
         return jsonify({'error': 'Todo not found'}), 404
     return jsonify(todo)
@@ -35,6 +38,7 @@ def get_todo(todo_id):
 def update_todo(todo_id):
     data = request.get_json()
     todo = next((todo for todo in todos if todo['id'] == todo_id), None)
+    
     if todo is None:
         return jsonify({'error': 'Todo not found'}), 404
     todo['title'] = data.get('title', todo['title'])
