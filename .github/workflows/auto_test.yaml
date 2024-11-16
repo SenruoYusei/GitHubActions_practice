@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 環境変数を読み込む
+      - name: Load environment variables
+        run: |
+          cat .github/workflows/env_vars >> $GITHUB_ENV
+
       # リポジトリをチェックアウト
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,7 +26,7 @@ jobs:
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: env.PYTHON_VERSION
 
       # pytestをインストール
       - name: Install dependencies
