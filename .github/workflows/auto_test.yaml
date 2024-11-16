@@ -20,6 +20,7 @@ jobs:
       - name: Load environment variables
         run: |
           for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+            echo $s
             echo $s >> $GITHUB_ENV
           done
           printenv
@@ -28,7 +29,7 @@ jobs:
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: env.PYTHON_VERSION
+          python-version: ${{ env.PYTHON_VERSION }}
 
       # pytestをインストール
       - name: Install dependencies
