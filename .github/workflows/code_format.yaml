@@ -11,14 +11,14 @@ jobs: # ジョブの定義を開始
     permissions:
       contents: write # コンテンツに対する書き込み権限を設定
     steps: # ジョブ内のステップの定義を開始
-      # 環境変数を読み込む
-      - name: Load environment variables
-        run: |
-          cat .github/workflows/env_vars >> $GITHUB_ENV
       - name: Checkout Repository # リポジトリのチェックアウト
         uses: actions/checkout@v4 # GitHubリポジトリからコードをチェックアウト
         with:
           ref: ${{ github.head_ref }} # GitHubヘッドリファレンスを指定
+      # 環境変数を読み込む
+      - name: Load environment variables
+        run: |
+          cat .github/workflows/env_vars >> $GITHUB_ENV
       - name: Set up Python ${{ env.PYTHON_VERSION }} # Python環境のセットアップ
         uses: actions/setup-python@v4 # Python環境のセットアップアクションを使用
         with:

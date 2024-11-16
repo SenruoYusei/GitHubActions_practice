@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # リポジトリをチェックアウト
+      - name: Checkout
+        uses: actions/checkout@v2
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
@@ -23,11 +26,6 @@ jobs:
           ls -l
           python -c "import yaml; env = yaml.safe_load(open('.github/workflows/env.yaml')); [print(f'{key}={value}') for key, value in env['env'].items()]" >> $GITHUB_ENV
           echo ${{ env.PYTHON_VERSION }}
-
-      # リポジトリをチェックアウト
-      - name: Checkout
-        uses: actions/checkout@v2
-
       # Pythonの環境をセットアップ
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
