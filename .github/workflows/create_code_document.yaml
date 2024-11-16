@@ -8,11 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 環境変数を読み込む
-      - name: Load environment variables
-        run: |
-          cat .github/workflows/env_vars >> $GITHUB_ENV
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
