@@ -19,12 +19,8 @@ def test_get_todos(client):
 
 def test_create_todo(client):
     response = client.post(
-        '/todos',
-        json={
-            'title': 'Test Todo',
-            'description': 'This is a test todo'
-        }
-        )
+        '/todos', json={'title': 'Test Todo', 'description': 'This is a test todo'}
+    )
     assert response.status_code == 201
     assert response.json['title'] == 'Test Todo'
     assert response.json['description'] == 'This is a test todo'
@@ -33,12 +29,8 @@ def test_create_todo(client):
 
 def test_get_todo(client):
     client.post(
-        '/todos',
-        json={
-            'title': 'Test Todo',
-            'description': 'This is a test todo'
-        }
-        )
+        '/todos', json={'title': 'Test Todo', 'description': 'This is a test todo'}
+    )
     response = client.get('/todos/1')
     assert response.status_code == 200
     assert response.json['title'] == 'Test Todo'
@@ -48,20 +40,16 @@ def test_get_todo(client):
 
 def test_update_todo(client):
     client.post(
-        '/todos',
-        json={
-            'title': 'Test Todo',
-            'description': 'This is a test todo'
-        }
-        )
+        '/todos', json={'title': 'Test Todo', 'description': 'This is a test todo'}
+    )
     response = client.put(
         '/todos/1',
         json={
             'title': 'Updated Todo',
             'description': 'This is an updated test todo',
-            'done': True
-        }
-        )
+            'done': True,
+        },
+    )
     assert response.status_code == 200
     assert response.json['title'] == 'Updated Todo'
     assert response.json['description'] == 'This is an updated test todo'
@@ -70,12 +58,8 @@ def test_update_todo(client):
 
 def test_delete_todo(client):
     client.post(
-        '/todos',
-        json={
-            'title': 'Test Todo',
-            'description': 'This is a test todo'
-        }
-        )
+        '/todos', json={'title': 'Test Todo', 'description': 'This is a test todo'}
+    )
     response = client.delete('/todos/1')
     assert response.status_code == 204
     response = client.get('/todos/1')
@@ -90,12 +74,12 @@ def test_get_nonexistent_todo(client):
 
 def test_update_nonexistent_todo(client):
     response = client.put(
-        '/todos/999', 
+        '/todos/999',
         json={
             'title': 'Updated Todo',
             'description': 'This is an updated test todo',
-            'done': True
-        }
+            'done': True,
+        },
     )
     assert response.status_code == 404
     assert response.json == {'error': 'Todo not found'}
@@ -107,12 +91,7 @@ def test_delete_nonexistent_todo(client):
 
 
 def test_create_todo_without_description(client):
-    response = client.post(
-        '/todos',
-        json={
-            'title': 'Test Todo'
-        }
-    )
+    response = client.post('/todos', json={'title': 'Test Todo'})
     assert response.status_code == 201
     assert response.json['title'] == 'Test Todo'
     assert response.json['description'] == ''
@@ -120,10 +99,7 @@ def test_create_todo_without_description(client):
 
 
 def test_create_todo_without_title(client):
-    response = client.post(
-        '/todos',
-        json={
-            'description': 'This is a test todo'
-        }
-    )
-    assert response.status_code == 400  # Assuming your app returns 400 for missing title
+    response = client.post('/todos', json={'description': 'This is a test todo'})
+    assert (
+        response.status_code == 400
+    )  # Assuming your app returns 400 for missing title
