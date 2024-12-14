@@ -35,7 +35,7 @@ jobs:
           make html
 
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/${{ github.ref_name }}'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
