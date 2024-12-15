@@ -29,10 +29,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install sphinx sphinx-rtd-theme
 
+      - name: Check for changes
+        run: |
+          git diff --name-only --cached
+          if [ $? -eq 0 ]; then
+            echo "Changes detected. Genarationg documentation..."
+          else
+            echo "No changes detected. Skipping documentation generate"
+          fi
+
       - name: Generate documentation
         run: |
-          cd docs
-          make html
+          if [ $? -eq 0 ]; then
+            cd docs
+            make html
+          fi
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/${{ github.ref_name }}'
