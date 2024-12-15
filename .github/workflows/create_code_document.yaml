@@ -33,6 +33,7 @@ jobs:
         run: |
           git diff --name-only --cached
           if [ $? -eq 0 ]; then
+            git diff > "./github/workflows/log/create_code_documentation/diff_${git rev-parse --abbrev-ref HEAD}_${date +%Y%m%d_%H%M%S}.log"
             echo "Changes detected. Genarationg documentation."
           else
             echo "No changes detected. Skipping documentation generate"
