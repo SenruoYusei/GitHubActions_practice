@@ -33,7 +33,7 @@ jobs:
         run: |
           git diff --name-only --cached
           if [ $? -eq 0 ]; then
-            echo "Changes detected. Genarationg documentation..."
+            echo "Changes detected. Genarationg documentation."
           else
             echo "No changes detected. Skipping documentation generate"
           fi
