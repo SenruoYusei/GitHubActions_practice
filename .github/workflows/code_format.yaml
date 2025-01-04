@@ -22,9 +22,12 @@ jobs: # ジョブの定義を開始
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
-            echo $s >> $GITHUB_ENV
-          done
+          if [ -f .github/workflows/env_vars ]; then
+            cat .github/workflows/env_vars >> $GITHUB_ENV
+          else
+            echo "PYTHON_VERSION=3.7" >> $GITHUB_ENV
+            echo "TEST_RESULTS_DIR=results" >> $GITHUB_ENV
+          fi
       # env.XXX can be used in the following steps
 
       - name: Set up Python ${{ env.PYTHON_VERSION }} # Python環境のセットアップ
@@ -41,12 +44,12 @@ jobs: # ジョブの定義を開始
         run: autoflake -r .
 
       - name: black # blackを使用してコードをフォーマット
-        run: black . --skip-string-normalization
+        run: black . --check --diff
 
       - name: isort # isortを使用してインポートステートメントを整理
-        run: isort .
+        run: isort . --check-only
 
-      - name: Auto Commit # 自動コミット
-        uses: stefanzweifel/git-auto-commit-action@v5 # 自動コミットアクションを使用
-        with:
-          commit_message: Apply Code Formatter # コミットメッセージを指定
+      # - name: Auto Commit # 自動コミット
+      #   uses: stefanzweifel/git-auto-commit-action@v5 # 自動コミットアクションを使用
+      #   with:
+      #     commit_message: Apply Code Formatter # コミットメッセージを指定
