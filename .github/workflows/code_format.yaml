@@ -44,7 +44,7 @@ jobs: # ジョブの定義を開始
         run: autoflake -r .
 
       - name: black # blackを使用してコードをフォーマット
-        run: black . skip-string-normalization --check --diff
+        run: black . --skip-string-normalization --check --diff
 
       - name: isort # isortを使用してインポートステートメントを整理
         run: isort . --check-only
