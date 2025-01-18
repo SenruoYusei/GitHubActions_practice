@@ -16,18 +16,15 @@ jobs: # ジョブの定義を開始
     steps: # ジョブ内のステップの定義を開始
       - name: Checkout Repository # リポジトリのチェックアウト
         uses: actions/checkout@v4 # GitHubリポジトリからコードをチェックアウト
-        with:
-          ref: ${{ github.head_ref }} # GitHubヘッドリファレンスを指定
+        # with:
+        #   ref: ${{ github.head_ref }} # GitHubヘッドリファレンスを指定
 
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          if [ -f .github/workflows/env_vars ]; then
-            cat .github/workflows/env_vars >> $GITHUB_ENV
-          else
-            echo "PYTHON_VERSION=3.7" >> $GITHUB_ENV
-            echo "TEST_RESULTS_DIR=results" >> $GITHUB_ENV
-          fi
+          for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+            echo $s >> $GITHUB_ENV
+          done
       # env.XXX can be used in the following steps
 
       - name: Set up Python ${{ env.PYTHON_VERSION }} # Python環境のセットアップ
