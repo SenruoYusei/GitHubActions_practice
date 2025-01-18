@@ -11,20 +11,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 環境変数を読み込む
+      - name: Load environment variables
+        run: |
+          for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+            echo $s >> $GITHUB_ENV
+          done
+      # env.XXX can be used in the following steps
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
         run: |
+          python --version
           python -m pip install --upgrade pip
           pip install sphinx sphinx-rtd-theme
 
+      - name: Check for changes
+        run: |
+          diff_log=$(git diff --name-only --cached)
+          echo "diff_log=$diff_log"
+          if [ $? -eq 0 ]; then
+            echo "Changes detected. Genarationg documentation."
+          else
+            echo "No changes detected. Skipping documentation generate"
+          fi
+
       - name: Generate documentation
         run: |
-          cd docs
-          make html
+          if [ $? -eq 0 ]; then
+            cd docs
+            make html
+          fi
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
@@ -32,4 +53,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/html
-          publish_branch: master
+          publish_branch: document
