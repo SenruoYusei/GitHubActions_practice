@@ -22,18 +22,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
         run: |
+          python --version
           python -m pip install --upgrade pip
           pip install sphinx sphinx-rtd-theme
 
       - name: Check for changes
         run: |
-          git diff --name-only --cached
+          diff_log=$(git diff --name-only --cached)
+          echo "diff_log=$diff_log"
           if [ $? -eq 0 ]; then
-            git diff > "./.github/workflows/log/create_code_documentation/diff_$(git rev-parse --abbrev-ref HEAD)_$(date +%Y%m%d_%H%M%S}).log"
             echo "Changes detected. Genarationg documentation."
           else
             echo "No changes detected. Skipping documentation generate"
@@ -47,7 +48,7 @@ jobs:
           fi
 
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/${{ github.ref_name }}'
+        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
