@@ -50,7 +50,7 @@ jobs:
           if [ $? -eq 0 ]; then
             cd docs
             echo "GITHUB_REF: $GITHUB_REF"
-            echo "git branch: ${{ git branch}}"
+            echo "git branch: ${{ git branch }}"
             make html
           fi
 
