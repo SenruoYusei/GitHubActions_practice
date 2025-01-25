@@ -19,7 +19,7 @@ jobs:
       # 環境変数を読み込む
       - name: Load environment variables
         run: |
-          for s in $(yq e ".env" -o=j .github/workflows/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
+          for s in $(yq e ".env" -o=j variables/env.yaml | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]"); do
             echo $s >> $GITHUB_ENV
           done
       # env.XXX can be used in the following steps
@@ -54,7 +54,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.ref == 'refs/heads/feature/add_test_cases/#2' }}
+        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           destination_dir: ./docs/html
