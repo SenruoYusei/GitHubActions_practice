@@ -50,6 +50,7 @@ jobs:
           if [ $? -eq 0 ]; then
             cd docs
             echo "GITHUB_REF: $GITHUB_REF"
+            echo "github_ref: : $github.ref"
             make html
           fi
 
