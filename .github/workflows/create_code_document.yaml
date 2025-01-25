@@ -49,14 +49,12 @@ jobs:
         run: |
           if [ $? -eq 0 ]; then
             cd docs
-            echo "GITHUB_REF: $GITHUB_REF"
-            echo "github_ref: : $github.ref"
             make html
           fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.ref == 'refs/heads/feature/add_test_cases/#2' }}
+        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/html
